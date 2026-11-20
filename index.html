@@ -1,0 +1,375 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>A Federation of World Models for Robots</title>
+<meta name="description" content="Predictive Responsibility, Composition, and Evaluation — CoRL 2026 workshop “Do Robots Need World Models?”. Paper, poster, code and video.">
+<meta property="og:title" content="A Federation of World Models for Robots">
+<meta property="og:description" content="Should a robot keep one model of the world, or several? Three federations, frozen before testing, against matched monoliths and conventional systems.">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23F8F4EA'/%3E%3Crect x='5' y='8' width='9' height='7' fill='none' stroke='%231C1A17' stroke-width='1.6'/%3E%3Crect x='18' y='17' width='9' height='7' fill='none' stroke='%232A78D6' stroke-width='1.6'/%3E%3Cpath d='M14 11.5h4v9' fill='none' stroke='%23A8874E' stroke-width='1.6'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400;6..96,500;6..96,600&family=Jost:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap">
+<style>
+:root{
+  --paper:#ffffff; --ivory:#F8F4EA; --yes:#2E7D5B; --no:#B8432F; --once:#8A6A1E; --ink:#1C1A17; --ink2:#3B3833; --grey:#6B6760; --grey2:#9A958B;
+  --gold:#A8874E; --gold2:#86683A; --blue:#2A78D6; --rule:#D7D4CD;
+  --serif:"Bodoni Moda",Didot,"Bodoni 72",Georgia,serif; --sans:Jost,"Futura","Avenir Next","Helvetica Neue",Arial,sans-serif;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);font-weight:300;font-size:17px;line-height:1.55;-webkit-font-smoothing:antialiased}
+a{color:var(--blue);text-decoration:none}
+a:hover{text-decoration:underline;text-underline-offset:3px}
+.wrap{max-width:1120px;margin:0 auto;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
+.eyebrow{font-size:12px;letter-spacing:.3em;text-transform:uppercase;color:var(--gold2);font-weight:400}
+.hero .sub{font-style:italic;color:var(--grey)}
+h1,h2,h3,.kv .n,.def .k,.proto .k,.proto .t,.card .t,.aside .big,.learned .col-h,.hero .sub{font-optical-sizing:none;font-variation-settings:"opsz" 14}
+h1,h2,h3{font-family:var(--serif);font-weight:400;letter-spacing:-.005em;text-wrap:balance;margin:0}
+h2{font-size:clamp(30px,3.4vw,42px);line-height:1.1;margin:10px 0 22px}
+h3{font-size:24px;line-height:1.2;margin:0 0 10px}
+p{margin:0 0 1em;max-width:70ch}
+.rule{height:1px;background:var(--gold);opacity:.9}
+section{padding:68px 0 24px}
+.sec-head{display:flex;flex-direction:column;gap:6px;padding-bottom:14px;border-bottom:1px solid var(--gold);margin-bottom:34px}
+
+/* top bar */
+.top{display:flex;justify-content:space-between;align-items:center;padding:22px 0 14px;border-bottom:2px solid var(--gold);font-size:12px;letter-spacing:.3em;text-transform:uppercase;color:var(--gold2);gap:16px;flex-wrap:wrap}
+.top nav{display:flex;gap:22px;flex-wrap:wrap}
+.top nav a{color:var(--gold2)}
+
+/* hero */
+.hero{padding:70px 0 10px;text-align:center}
+.hero h1{font-size:clamp(38px,6.2vw,80px);line-height:1.02;margin:16px auto 10px;max-width:16ch}
+.hero .sub{font-family:var(--serif);font-size:clamp(20px,2.4vw,30px);line-height:1.2;color:var(--ink2);margin:0 auto 34px;max-width:36ch}
+.authors{display:flex;justify-content:center;gap:48px;flex-wrap:wrap;margin-bottom:10px}
+.author .n{font-size:21px;font-weight:400}
+.author .a{color:var(--grey);font-size:15px}
+.venue{color:var(--grey);font-size:15px;margin:0 auto 34px;max-width:none}
+.venue b{font-weight:400;color:var(--ink2)}
+.btns{display:flex;justify-content:center;gap:12px;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:9px;padding:12px 22px;border:1px solid var(--ink);border-radius:999px;color:var(--ink);font-size:14px;letter-spacing:.12em;text-transform:uppercase;font-weight:400;transition:background .15s,color .15s}
+.btn:hover{background:var(--ink);color:var(--paper);text-decoration:none}
+.btn.blue{border-color:var(--blue);color:var(--blue)} .btn.blue:hover{background:var(--blue);color:#fff}
+.btn svg{width:16px;height:16px;flex:none}
+
+
+/* video */
+.video-box{background:#000;border:1px solid var(--rule);box-shadow:0 30px 60px -30px rgba(28,26,23,.45)}
+video{display:block;width:100%;height:auto;aspect-ratio:16/9;background:#000}
+.video-meta{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-top:14px;font-size:14px;color:var(--grey)}
+.video-meta a{color:var(--gold2)}
+
+/* abstract */
+.abstract{display:grid;grid-template-columns:1fr 2fr;gap:48px}
+.abstract p{font-size:18.5px;line-height:1.6;max-width:none}
+.keywords{display:flex;gap:8px;flex-wrap:wrap;margin-top:22px}
+.kw{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold2);border:1px solid var(--gold);padding:5px 11px;border-radius:999px}
+.aside{color:var(--grey);font-size:15px;line-height:1.55}
+.aside .big{font-family:var(--serif);font-size:30px;color:var(--ink);line-height:1.18;margin-bottom:16px}
+
+/* figure */
+figure{margin:0}
+figure img{display:block;width:100%;height:auto;max-width:100%}
+figcaption{font-size:14px;color:var(--grey);margin-top:12px;line-height:1.5;max-width:90ch}
+.fig-frame{background:#fff;border:1px solid var(--rule);padding:22px}
+.defs{display:grid;grid-template-columns:repeat(4,1fr);gap:28px;margin-top:36px}
+.def .k{font-family:var(--serif);font-size:44px;color:var(--grey2);line-height:1}
+.def .t{font-size:19px;font-weight:400;margin:6px 0 4px}
+.def .d{font-size:15px;color:var(--grey);line-height:1.5}
+
+/* experiments */
+.exp{display:grid;grid-template-columns:1.05fr .95fr;gap:44px;align-items:start;padding:36px 0;border-top:1px solid var(--rule)}
+.exp:first-of-type{border-top:0}
+.sec-head + .exp{border-top:0;padding-top:0}
+.exp .img{background:#fff;border:1px solid var(--rule);padding:16px}
+.exp .img img{display:block;width:100%;height:auto}
+.exp .k{font-size:12px;letter-spacing:.3em;text-transform:uppercase;color:var(--gold2)}
+.exp h3{font-size:30px;margin:8px 0 12px}
+.exp p{font-size:16.5px;color:var(--ink2)}
+.kv{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:18px}
+.kv>div{background:var(--ivory);padding:16px 18px 14px}
+.kv .n{font-family:var(--serif);font-size:40px;line-height:1;color:var(--blue)}
+.kv .n i{font-style:normal;color:var(--grey2);font-size:.58em;margin-left:6px}
+.kv .c{font-size:13.5px;color:var(--grey);margin-top:5px;line-height:1.4}
+
+/* ledger */
+.ledger{display:grid;grid-template-columns:1.25fr .75fr;gap:48px;align-items:start}
+.claims{width:100%;border-collapse:collapse;font-size:15.5px}
+.claims th{text-align:left;font-size:11.5px;letter-spacing:.3em;text-transform:uppercase;color:var(--gold2);font-weight:400;padding:0 10px 10px 0;border-bottom:1px solid var(--gold)}
+.claims td{padding:13px 10px 13px 0;border-bottom:1px solid var(--rule);vertical-align:top;line-height:1.4}
+.claims td span{display:block;font-size:13px;color:var(--grey);margin-top:4px}
+.claims td.yes{color:var(--yes)} .claims td.no{color:var(--no)} .claims td.once{color:var(--once)}
+.claims td:last-child{white-space:nowrap;font-weight:400;width:1%}
+.learned{background:var(--ivory);padding:26px 28px 18px}
+.learned .col-h{font-family:var(--serif);font-size:26px;line-height:1.15;margin:0 0 14px}
+.learned .col-h span{font-family:var(--sans);font-size:12px;letter-spacing:.3em;text-transform:uppercase;color:var(--gold2);display:block;margin-bottom:8px}
+.learned ul{margin:0;padding-left:18px}
+.learned li{padding:7px 0;font-size:16px;line-height:1.45;color:var(--ink2)}
+.learned li b{font-weight:500;color:var(--ink)}
+
+/* protocol */
+.proto{display:grid;grid-template-columns:repeat(4,1fr);gap:26px}
+.proto .q{border-top:2px solid var(--gold);padding-top:14px}
+.proto .k{font-family:var(--serif);font-size:40px;color:var(--grey2);line-height:1}
+.proto .t{font-family:var(--serif);font-size:22px;margin:8px 0 8px;line-height:1.2}
+.proto .d{font-size:15px;color:var(--grey);line-height:1.5}
+
+/* resources */
+.res{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+.card{border:1px solid var(--rule);background:var(--ivory);padding:22px 22px 20px;display:flex;flex-direction:column;gap:6px;transition:border-color .15s}
+.card:hover{border-color:var(--gold);text-decoration:none}
+.card .k{font-size:11.5px;letter-spacing:.3em;text-transform:uppercase;color:var(--gold2)}
+.card .t{font-family:var(--serif);font-size:24px;color:var(--ink);line-height:1.15}
+.card .d{font-size:14.5px;color:var(--grey);line-height:1.45}
+
+/* bibtex */
+pre{background:var(--ivory);border:1px solid var(--rule);padding:20px 22px;font:14px/1.55 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;color:var(--ink2);overflow-x:auto;margin:0}
+.copy{font-size:12px;letter-spacing:.2em;text-transform:uppercase;border:1px solid var(--ink);background:none;color:var(--ink);padding:8px 14px;border-radius:999px;cursor:pointer;font-family:var(--sans)}
+.copy:hover{background:var(--ink);color:var(--paper)}
+.sec-head.bib-head{flex-direction:row;justify-content:space-between;align-items:end;gap:16px;flex-wrap:wrap}
+
+footer{margin-top:70px;border-top:2px solid var(--gold);padding:26px 0 46px;font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--grey);display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+footer a{color:var(--gold2)}
+
+@media (max-width:860px){
+  .defs,.proto,.res{grid-template-columns:1fr 1fr}
+  .abstract,.exp,.ledger{grid-template-columns:1fr}
+  .exp{gap:22px}
+  section{padding:54px 0 16px}
+}
+@media (max-width:520px){
+  .defs,.proto,.res,.kv{grid-template-columns:1fr}
+  .claims td:last-child{white-space:normal}
+  .authors{gap:20px}
+  .top{letter-spacing:.2em}
+}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header class="top">
+    <div>CoRL 2026 · Do Robots Need World Models?</div>
+    <nav>
+      <a href="#video">Video</a><a href="#abstract">Abstract</a><a href="#federation">Federation</a><a href="#experiments">Experiments</a><a href="#learned">Findings</a><a href="#bibtex">Cite</a>
+    </nav>
+  </header>
+
+  <div class="hero">
+    <div class="eyebrow">A position paper, three federations, one protocol</div>
+    <h1>A Federation of World Models for Robots</h1>
+    <p class="sub">Predictive Responsibility, Composition, and Evaluation</p>
+
+    <div class="authors">
+      <div class="author"><div class="n">Brownstafford Abraham</div><div class="a">Everyday Intelligence</div></div>
+      <div class="author"><div class="n">Katerina Vinciguerra</div><div class="a">University of Parma</div></div>
+    </div>
+    <p class="venue">Workshop <b>“Do Robots Need World Models?”</b> · 10th Conference on Robot Learning, CoRL 2026</p>
+
+    <div class="btns">
+      <a class="btn" href="assets/paper.pdf"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6 3h8l5 5v13H6z"/><path d="M14 3v5h5M9 13h6M9 17h6"/></svg>Paper</a>
+      <a class="btn" href="assets/poster_A0.pdf"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="4" y="3" width="16" height="18"/><path d="M8 8h8M8 12h8M8 16h5"/></svg>Poster</a>
+      <a class="btn" href="https://github.com/kate-vinci/fwm-driving"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M8 4 3 12l5 8M16 4l5 8-5 8M14 3l-4 18"/></svg>Code</a>
+      <a class="btn blue" href="#video"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M10 9l5 3-5 3z" fill="currentColor"/></svg>Video · 4 min</a>
+      <a class="btn" href="#bibtex"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M7 5h10v14H7zM10 9h4M10 12h4"/></svg>BibTeX</a>
+    </div>
+
+  </div>
+</div>
+
+<section id="video">
+  <div class="wrap">
+    <div class="sec-head"><div class="eyebrow">Four minutes</div><h2>The paper, in four minutes</h2></div>
+    <div class="video-box">
+      <video controls preload="metadata" playsinline poster="assets/video_poster.jpg">
+        <source src="assets/fwm_video_4min.mp4" type="video/mp4">
+        Your browser does not support embedded video. <a href="assets/fwm_video_4min.mp4">Download the mp4.</a>
+      </video>
+    </div>
+    <div class="video-meta">
+      <span>One question, the federation on a robot, the decisive test, three experiments, one blooper, what we learned.</span>
+      <span>In a hurry? <a href="assets/fwm_one_minute.mp4">The one-minute reel</a> · <a href="assets/fwm_video_4min.mp4">download the full video</a></span>
+    </div>
+  </div>
+</section>
+
+<section id="abstract">
+  <div class="wrap">
+    <div class="sec-head"><div class="eyebrow">Abstract</div><h2>One model of the world, or several?</h2></div>
+    <div class="abstract">
+      <div class="aside">
+        <div class="big">Compose bounded models with explicit relations, a federation, and charge every boundary its cost.</div>
+        <p>One network learns everything, and shares the same limits: confident predictions where it has never been, failure when two known conditions combine, retraining everything when one part changes. A boundary is justified only when its composition improves a pre-specified, system-level outcome over stronger and simpler alternatives, after coupling, routing, synchronization and computation have been charged.</p>
+        <div class="keywords"><span class="kw">world models</span><span class="kw">modularity</span><span class="kw">composition</span><span class="kw">couplers</span><span class="kw">typed contracts</span><span class="kw">resource-matched evaluation</span></div>
+      </div>
+      <div>
+        <p>Should a robot maintain one model of the world, or several models, each responsible for predicting a bounded part of it? We argue for multiple models when behavior involves reusable mechanisms, distinct interaction regimes, or separate horizons, provided that the relationships between <em>members</em> and the rules governing their exchange of state information are explicit: a <em>federation of world models</em>. We built three complete federations and froze them before testing. In highway driving, an analytical ego <em>member</em>, a learned traffic <em>member</em>, and a <em>coupler</em> with a typed <em>contract</em> are compared to a <em>monolith</em> with a matched parameter count. In mobile manipulator transport, separately learned base and arm <em>members</em> are assembled for previously unseen base-arm pairings. In dexterous tool use, two <em>members</em> exchange an estimated interaction load.</p>
+        <p>Each federation was evaluated on a withheld combination of conditions, without training data from that combination, against a monolithic model trained on the same data with a matched parameter count. The federations achieved higher success rates than the matched monoliths in driving and transport: 0.62 versus 0.57 in driving with the shared safety rule and 0.99 versus 0.40 on a reserved base-arm pairing. In driving, contract checks converted interface faults into abstentions, while the analytical ego member could be updated through parameter changes without additional training data. However, the exchanges between <em>members</em> explained little of the gain, the monoliths caught up in some settings once data from the target condition existed, and conventional controllers, with or without one learned component, were often competitive. Lastly, faster task execution didn't imply cheaper decisions, the federations generally required more computation per decision. We provide an evaluation protocol for testing when composition justifies its architectural and computational costs. Code and evaluation scripts for the highway driving experiments can be found in our repository <a href="https://github.com/kate-vinci/fwm-driving">fwm-driving</a>.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="federation">
+  <div class="wrap">
+    <div class="sec-head"><div class="eyebrow">The concept</div><h2>Bounded members, explicit relations, checked messages</h2></div>
+    <figure>
+      <div class="fig-frame"><img src="assets/fig_federation.png" alt="Federation of world models: learned and analytical members, couplers with typed contracts, one joint future handed to a shared planner, which executes in the environment and feeds back observations."></div>
+      <figcaption>Members predict bounded parts of the world from declared observations and actions. Couplers transform state between scopes under a typed contract; a message that fails its contract is rejected before it is used, so an interface fault becomes an abstention rather than a wrong action. One joint future is handed to a single shared planner. Solid: what we tried. Dashed: what remains open.</figcaption>
+    </figure>
+    <div class="defs">
+      <div class="def"><div class="k">1</div><div class="t">Member</div><div class="d">Declares what it predicts, on what clock, and where it was validated. Analytical (the vehicle's kinematics) or learned (the traffic).</div></div>
+      <div class="def"><div class="k">2</div><div class="t">Coupler</div><div class="d">A relation across members: transform, select the regime, or predict an effect of one member on another.</div></div>
+      <div class="def"><div class="k">3</div><div class="t">Contract</div><div class="d">How a message must be read: frame, units, horizon, validity. A rule decides whether it updates belief or only constrains planning.</div></div>
+      <div class="def"><div class="k">4</div><div class="t">One joint future</div><div class="d">A shared planner compares candidate actions on the assembled prediction; no member acts on its own.</div></div>
+    </div>
+  </div>
+</section>
+
+<section id="experiments">
+  <div class="wrap">
+    <div class="sec-head"><div class="eyebrow">Three federations, frozen before testing</div><h2>Each tested on a combination it had never seen</h2></div>
+
+    <div class="exp">
+      <div class="img" style="padding:0;background:#0f1114"><img src="assets/driving_band.png" alt="The highway of experiment 1: the loaded ego vehicle among learned traffic, drawn as rectangles of the bicycle model."></div>
+      <div>
+        <div class="k">Experiment 1 · highway autonomous driving</div>
+        <h3>Exact vehicle model · learned traffic · safety margin</h3>
+        <p>An analytical ego member (bicycle model), a learned traffic member and a coupler with a typed contract, against a monolith trained on the same data at the same parameter count (27 939 against 28 064). Six tests, from the nominal condition through localized shifts and interface faults to a withheld combination of two known changes (aggressive traffic × loaded vehicle), with a rule-based driver and ablations as the conventional and attribution comparators. The gain over the monolith is the ego predicted apart from the traffic; the learned traffic member adds nothing over constant velocity.</p>
+        <div class="kv">
+          <div><div class="n">0.62<i>vs 0.57</i></div><div class="c">withheld combination, no data, same safety rule</div></div>
+          <div><div class="n">0.97<i>vs 0.00</i></div><div class="c">stale message at every decision, contract check on against off: collisions became abstentions</div></div>
+          <div><div class="n">0.71<i>rule-based driver</i></div><div class="c">no model at all, almost never collided, at 23.1 m/s instead of 29.1</div></div>
+          <div><div class="n">9.8<i>ms vs 7.0</i></div><div class="c">per decision on one CPU core: the federation is the slowest</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="exp">
+      <div class="img"><img src="assets/schema_transport.png" alt="Transport schematic: a base member and an arm member, each learned alone, assembled for a reserved base-arm pairing."></div>
+      <div>
+        <div class="k">Experiment 2 · mobile-manipulator transport</div>
+        <h3>A base member and an arm member, each learned alone</h3>
+        <p>A learned base-response member and a learned arm-response member, each trained with the other component still, compose through a rigid-body coupler into an analytical stability margin; one planner chooses both commands every 100 ms. On combined motion, which no member saw, the federation delivered everything. Members were then assembled, with no data, for a base–arm pairing reserved from all training: the federation kept delivering where the monolith did not, provided the members had seen base and arm moving together. On a pairing it already knew, the same federation lost two seeds of eight to timeouts: better in the unknown, worse at home.</p>
+        <div class="kv">
+          <div><div class="n">180<i>of 180</i></div><div class="c">payloads delivered on combined motion, against 67 % of pucks and 28 % of boxes for the monolith</div></div>
+          <div><div class="n">0.99<i>vs 0.40</i></div><div class="c">reserved pairing, zero data, 8 of 8 seeds, p = 0.008</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="exp">
+      <div class="img"><img src="assets/schema_tool.png" alt="Tool-use schematic: a tool member and a cube member exchange an estimated interaction load on a grasped tool."></div>
+      <div>
+        <div class="k">Experiment 3 · dexterous tool use</div>
+        <h3>Two members exchange the load on a grasped tool</h3>
+        <p>A Panda with a grasped 0.35 m tool pulls a 5 or 10 kg cube from two grasp positions. A wielding member predicts how the tool moves in the hand; a tool-target member predicts how the cube responds; the estimated interaction load is exchanged through a contract. The federation and the matched monolith did not differ in any cell, the withheld one included, and every learned model predicted in-hand rotation worse than the conventional planner's rigid-grasp assumption. A boundary that buys nothing is a result too.</p>
+        <div class="kv">
+          <div><div class="n">88<i>of 90</i></div><div class="c">successes within 12 s, federation and monolith alike</div></div>
+          <div><div class="n">0<i>measurable gain</i></div><div class="c">the boundary is instantiated and buys nothing; the conventional stack alone falls on the heaviest off-centre grasp</div></div>
+        </div>
+      </div>
+    </div>
+
+    <figure style="margin-top:40px">
+      <div class="fig-frame"><img src="assets/fig_results.png" alt="Results at a glance: (a) driving success on the withheld combination as shifted transitions are given to the learned systems; (b) transport delivery on the reserved pairing; (c) tool-use success per grasp-load cell."></div>
+      <figcaption>At a glance. (a) Driving: the federation leads the monolith on the withheld combination until about a thousand shifted transitions, when the monolith catches up; the rule-based driver sits above both. (b) Transport: coupled-motion members deliver from zero data, the monolith needs about a thousand transitions from the reserved pairing. (c) Tool use: federation and monolith match in every cell; the conventional stack falls further on the heaviest off-centre grasp. Dots are seeds.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section id="learned">
+  <div class="wrap">
+    <div class="sec-head"><div class="eyebrow">The ledger</div><h2>What the three instances support, and under what condition</h2></div>
+    <div class="ledger">
+      <table class="claims">
+        <thead><tr><th>Claim</th><th>Verdict</th></tr></thead>
+        <tbody>
+          <tr><td>Members built apart act on a combination they never saw together, where a matched monolith fails<span>E1 withheld combination 0.62 vs 0.57 · E2 reserved pairing 0.99 vs 0.40</span></td><td class="yes">supported</td></tr>
+          <tr><td>Reuse reaches a target with less data than a monolith<span>one reserved pairing, members that saw coupled motion (p = 0.008)</span></td><td class="once">once</td></tr>
+          <tr><td>Updating a member leaves working configurations intact<span>E1: new parameters, no data · E2: one pairing lost in 2 of 8 seeds; monolith updates damaged pairings throughout</span></td><td class="once">mixed</td></tr>
+          <tr><td>Failures are safe<span>abstentions under a stale message (0.97 vs 0.00); timeouts, never a dropped payload</span></td><td class="yes">supported</td></tr>
+          <tr><td>The exchange between members explains the gain<span>one member carries 81–100 % of it; constant-velocity traffic does as well as the learned member</span></td><td class="no">not supported</td></tr>
+          <tr><td>Contracts stop invalid messages at negligible cost<span>every malformed class rejected at 25 µs; the same check protects the monolith</span></td><td class="yes">supported, not specific</td></tr>
+          <tr><td>A federation decides cheaply<span>slowest in every instance: 9.8 vs 7.0 ms in driving, 59–64 vs 23–48 ms in transport</span></td><td class="no">not supported</td></tr>
+          <tr><td>A federation beats a conventional controller<span>the rule-based driver almost never collides (0.71 vs 0.62), more slowly; C with the learned base member keeps most of the gain</span></td><td class="no">not in general</td></tr>
+        </tbody>
+      </table>
+      <div class="learned">
+        <div class="col-h"><span>What we learned</span>Boundaries earn their cost when…</div>
+        <ul>
+          <li>Boundaries pay when the robot must act on a combination it has <b>no data for</b>, and when a part changes and the update <b>must not break</b> what works.</li>
+          <li>They do not make learning cheaper once target data exist; the monoliths caught up with about a thousand transitions.</li>
+          <li>Not automatically better than a good conventional controller; the value sits in one good member per part.</li>
+          <li>The federation is always the slowest to decide.</li>
+          <li>Whether composition earns its cost is now a <b>testable question</b>. We give the test.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="protocol">
+  <div class="wrap">
+    <div class="sec-head"><div class="eyebrow">The decisive test</div><h2>Every federation faces the same four questions</h2></div>
+    <div class="proto">
+      <div class="q"><div class="k">1</div><div class="t">The withheld combination</div><div class="d">Two known changes, together, with no data from their combination. The federation must act there before it is allowed to claim anything.</div></div>
+      <div class="q"><div class="k">2</div><div class="t">The monolith</div><div class="d">One network, same data, same number of parameters. It must not be handicapped.</div></div>
+      <div class="q"><div class="k">3</div><div class="t">The conventional system</div><div class="d">What an engineer fields without a world model: rules, a calibrated stack, or one learned part.</div></div>
+      <div class="q"><div class="k">4</div><div class="t">The ablations</div><div class="d">One member removed, or one exchange replaced by a constant: which part pays for the result?</div></div>
+    </div>
+    <p style="margin-top:34px;color:var(--grey)">One endpoint fixed before the run, every cost charged to it, realized utilization reported; localized changes and interface stress, where boundaries are supposed to pay. What remains is the same protocol on a physical robot, in a digital twin recalibrated on real recordings with an unrecorded condition withheld. The point is not that composition wins; it is that whether it does, and for which objective, is now a testable question.</p>
+  </div>
+</section>
+
+<section id="resources">
+  <div class="wrap">
+    <div class="sec-head"><div class="eyebrow">Paper &amp; resources</div><h2>Everything needed to rerun the verdicts</h2></div>
+    <div class="res">
+      <a class="card" href="assets/paper.pdf"><div class="k">PDF · 4 pages + appendices</div><div class="t">The paper</div><div class="d">Camera-ready for the CoRL 2026 workshop “Do Robots Need World Models?”, with the full tables, specifications and every failed run.</div></a>
+      <a class="card" href="https://github.com/kate-vinci/fwm-driving"><div class="k">GitHub · Python</div><div class="t">fwm-driving</div><div class="d">The highway federation, the matched monolith, the six tests and the scripts that regenerate every number in the paper.</div></a>
+      <a class="card" href="assets/poster_A0.pdf"><div class="k">PDF · A0 portrait</div><div class="t">The poster</div><div class="d">The federation, the six driving tests, the three experiments and the ledger on one sheet.</div></a>
+      <a class="card" href="assets/fwm_video_4min.mp4"><div class="k">MP4 · 4 min</div><div class="t">The video</div><div class="d">The full narrated presentation: the question, the federation, the three experiments, the ledger.</div></a>
+      <a class="card" href="assets/fwm_one_minute.mp4"><div class="k">MP4 · 1 min</div><div class="t">The one-minute reel</div><div class="d">The same story, compressed to a minute, for a feed or a README.</div></a>
+      <a class="card" href="https://github.com/kate-vinci/fwm-driving/blob/main/docs/SYSTEMS_AND_TESTS.md"><div class="k">Markdown</div><div class="t">Systems and tests</div><div class="d">Specification of the comparator systems, the six driving tests, the interface faults and the record format.</div></a>
+    </div>
+  </div>
+</section>
+
+<section id="bibtex">
+  <div class="wrap">
+    <div class="sec-head bib-head"><div><div class="eyebrow">Cite</div><h2 style="margin-bottom:0">BibTeX</h2></div><button class="copy" id="copybib" type="button">Copy</button></div>
+<pre id="bib">@inproceedings{abraham2026federation,
+  title     = {A Federation of World Models for Robots: Predictive Responsibility, Composition, and Evaluation},
+  author    = {Abraham, Brownstafford and Vinciguerra, Katerina},
+  booktitle = {Do Robots Need World Models? Workshop, 10th Conference on Robot Learning (CoRL 2026)},
+  year      = {2026},
+  url       = {https://github.com/kate-vinci/fwm-driving}
+}</pre>
+  </div>
+</section>
+
+<div class="wrap">
+  <footer>
+    <div>Abraham &amp; Vinciguerra · 2026</div>
+    <div><a href="mailto:brownstafford@everydayintelligence.org">brownstafford@everydayintelligence.org</a> · <a href="mailto:katerina.vinciguerra@unipr.it">katerina.vinciguerra@unipr.it</a></div>
+  </footer>
+</div>
+
+<script>
+(function(){
+  var b=document.getElementById('copybib'),t=document.getElementById('bib');
+  if(!b||!t)return;
+  b.addEventListener('click',function(){
+    var s=t.textContent,done=function(){b.textContent='Copied';setTimeout(function(){b.textContent='Copy'},1600)};
+    if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(s).then(done,function(){sel()})}else sel();
+    function sel(){var r=document.createRange();r.selectNodeContents(t);var g=window.getSelection();g.removeAllRanges();g.addRange(r);b.textContent='Selected'}
+  });
+})();
+</script>
+</body>
+</html>
